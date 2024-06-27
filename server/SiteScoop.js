@@ -64,7 +64,7 @@ const cleanHtmlContent = (html) => {
   html = html.replace(/<script[^>]*src=["']https:\/\/www\.googletagmanager\.com\/gtm\.js[^>]*><\/script>/g, '');
   html = html.replace(/<script[^>]*>[\s\S]*?(?:gtag|googletagmanager)[\s\S]*?<\/script>/g, '');
 
-  // Remove other tracking scripts by common patterns (more specific)
+  // Remove other tracking scripts by common patterns
   html = html.replace(/<script[^>]*>[\s\S]*?(?:_gaq|_gat|ga\().*?<\/script>/g, '');
 
   // Remove cookies related to tracking
@@ -75,7 +75,9 @@ const cleanHtmlContent = (html) => {
 
 // Main function
 (async () => {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
+  });
   const page = await browser.newPage();
 
   const visited = new Set();
